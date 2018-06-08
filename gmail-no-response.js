@@ -17,6 +17,7 @@
 var unrespondedLabel = 'No Response',
     ignoreLabel = 'Ignore No Response', // add this manually in Gmail to low-priority requests to skip them
     skipLabels = ['Boomerang-Outbox', 'Boomerang-Returned'], // filter out Boomerang emails
+    onlyQuestions = true,   // 5 days
     minTime = '5d',   // 5 days
     maxTime = '14d';  // 14 days
 
@@ -72,6 +73,16 @@ function processUnresponded() {
           Logger.log("Found skip label " + skipLabels[i] + ": skipping " + lastMessage.getSubject());
           skip = true; 
         }
+      }
+      if (!skip && onlyQuestions) {
+        var lastBody = lastMessage.getPlainBody(),
+        lastBodyWithoutQuotedReply = lastBody.substr(0, lastBody.indexOf("wrote:"));
+
+        if (lastBodyWithoutQuotedReply.indexOf("?") < 0) {
+          Logger.log("Not a question: skipping " + lastMessage.getSubject());
+          skip = true;
+        }
+
       }
       if (!skip) {
         unrespondedThreads.push(thread);
