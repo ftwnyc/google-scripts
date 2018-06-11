@@ -78,7 +78,7 @@ function processUnresponded() {
         var lastBody = lastMessage.getPlainBody(),
         lastBodyWithoutQuotedReply = lastBody.substr(0, lastBody.indexOf("wrote:"));
 
-        if (lastBodyWithoutQuotedReply.indexOf("?") < 0) {
+        if (lastBodyWithoutQuotedReply.match(/\?\s/g) == null) {
           Logger.log("Not a question: skipping " + lastMessage.getSubject());
           skip = true;
         }
