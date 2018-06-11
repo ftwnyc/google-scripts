@@ -82,7 +82,6 @@ function processUnresponded() {
           Logger.log("Not a question: skipping " + lastMessage.getSubject());
           skip = true;
         }
-
       }
       if (!skip) {
         unrespondedThreads.push(thread);
